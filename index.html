@@ -23,31 +23,26 @@
             align-items: center;
         }
 
-        /* 中间主文字：保持 8vw 不变 */
         .center-text {
             font-size: 8vw;
-            color: #000;
-            letter-spacing: 0.15em;
+            color: #000000;
+            letter-spacing: 0.06em; /* 已调小文字间距 */
         }
 
         .footer-text {
             position: absolute;
-            color: #000;
+            color: #000000;
             bottom: 25%;
-            /* 文字居中对齐，两行更美观 */
             text-align: left;
         }
 
-        /* 恢复原始字号：1.2rem | 透明隐藏可复制 | 两行文字 */
         .left-bottom {
             left: 2rem;
             font-size: 1.2rem;
             opacity: 0;
-            /* 行间距优化，适配两行文字 */
             line-height: 1.5;
         }
 
-        /* 恢复原始字号：0.9rem */
         .right-bottom {
             right: 2rem;
             font-size: 0.9rem;
@@ -56,12 +51,10 @@
 </head>
 <body>
     <div class="center-text">ANTHV/A</div>
-    <!-- 左下：两行文字 + 隐藏可复制 + 原始字号 -->
     <div class="footer-text left-bottom">
         一点星尘（深圳）科技有限公司<br>
         Anthvia Limited
     </div>
-    <!-- 右下：原始字号 + 原文 -->
     <div class="footer-text right-bottom">ai#anthvia.com(#=@)</div>
 </body>
 </html>
