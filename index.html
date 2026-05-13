@@ -200,6 +200,7 @@
                 img.style.top = y + 'px';
                 img.dataset.ox = x;
                 img.dataset.oy = y;
+                img.dataset.size = imgSize;
                 img.style.transform = `translate(-50%, -50%) rotate(${rot}deg) scale(0.3)`;
                 wrapper.appendChild(img);
             }
@@ -214,23 +215,35 @@
         function startBalloonPhysics() {
             const photos = document.querySelectorAll('.photo');
             const avoidRadius = 140;
-            const avoidForce = 20;
+            const avoidForce = 22;
             const logo = document.querySelector('.center-text');
 
             photos.forEach(img => {
                 let ox = parseFloat(img.dataset.ox);
                 let oy = parseFloat(img.dataset.oy);
+                let size = parseFloat(img.dataset.size);
                 let offsetX=0, offsetY=0;
-                let velX = (Math.random()-0.5)*0.3;
-                let velY = (Math.random()-0.5)*0.3;
+                let velX = (Math.random()-0.5)*0.4;
+                let velY = (Math.random()-0.5)*0.4;
                 const baseRot = img.style.transform.match(/rotate\((.*?)deg\)/)[1];
 
                 function update() {
+                    // 移动
                     offsetX += velX;
                     offsetY += velY;
-                    if(Math.abs(offsetX)>12) velX*=-1;
-                    if(Math.abs(offsetY)>12) velY*=-1;
 
+                    // 🔥 碰到屏幕边缘 → 反弹
+                    let currX = ox + offsetX;
+                    let currY = oy + offsetY;
+
+                    if (currX - size/2 < 0 || currX + size/2 > window.innerWidth) {
+                        velX *= -1;
+                    }
+                    if (currY - size/2 < 0 || currY + size/2 > window.innerHeight) {
+                        velY *= -1;
+                    }
+
+                    // 鼠标躲避
                     const rect = img.getBoundingClientRect();
                     const cx = rect.left + rect.width/2;
                     const cy = rect.top + rect.height/2;
@@ -243,7 +256,7 @@
                         offsetY += Math.sin(a)*avoidForce*(1-dist/avoidRadius);
                     }
 
-                    // ✅ 图片碰到LOGO → 自动变透明
+                    // 碰到LOGO变透明
                     const lr = logo.getBoundingClientRect();
                     const overlap = 
                         rect.left < lr.right &&
