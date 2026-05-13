@@ -157,8 +157,9 @@
 
     <div class="main-info">洛宝家的礼物相关..</div>
 
-    <a href="https://im.qq.com/" target="_blank" class="nav-link nav-left">积分查询</a>
-    <a href="https://www.baidu.com/" target="_blank" class="nav-link nav-right">礼物登记</a>
+    <!-- 已替换为你提供的官方链接 -->
+    <a href="https://www.kdocs.cn/l/cpOS6o0WxM5F" target="_blank" class="nav-link nav-left">积分查询</a>
+    <a href="https://f.wps.cn/g/zuMcXanF/" target="_blank" class="nav-link nav-right">礼物登记</a>
 
     <div class="photo-wrapper" id="photoWrapper"></div>
 
@@ -187,17 +188,10 @@
 
                 let posX, posY;
                 
-                // 🔥 🔥 🔥 彻底禁止图片出现在任何文字区域
-                // 禁止区域：
-                // 1. 顶部LOGO：0 - 20%
-                // 2. 屏幕正中央大LOGO：40 - 60%
-                // 3. 中间导航：45 - 65%
-                // 4. 底部：80 - 100%
                 while (true) {
                     posX = Math.random() * 100;
                     posY = Math.random() * 100;
 
-                    // 只允许图片出现在 20% ~ 40% 和 65% ~ 80%
                     if( (posY >= 22 && posY <= 38) || (posY >= 65 && posY <= 78) ) {
                         break;
                     }
