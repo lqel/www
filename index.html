@@ -171,8 +171,8 @@
         function initPhotos() {
             const wrapper = document.getElementById('photoWrapper');
             const imgSize = Math.max(window.innerWidth, window.innerHeight) / 3.2;
-            const safeLeft = window.innerWidth * 0.28;
-            const safeTop = window.innerHeight * 0.18;
+            const safeLeft = window.innerWidth * 0.32;
+            const safeTop = window.innerHeight * 0.22;
             const positions = [];
             const minDist = imgSize * 0.6;
 
@@ -211,7 +211,7 @@
                 const rot = (Math.random() - 0.5) * 40;
                 img.style.left = x + 'px';
                 img.style.top = y + 'px';
-                img.dataset.ox = x;  
+                img.dataset.ox = x;
                 img.dataset.oy = y;
                 img.style.transform = `translate(-50%, -50%) rotate(${rot}deg) scale(0.3)`;
                 wrapper.appendChild(img);
@@ -224,13 +224,14 @@
             }, 100);
         }
 
-        // 🎈 物理气球 + 禁区强制保护
+        // 🎈 最强禁区锁 + 气球物理
         function startBalloonPhysics() {
             const photos = document.querySelectorAll('.photo');
             const avoidRadius = 130;
             const avoidForce = 18;
-            const safeLeft = window.innerWidth * 0.28;
-            const safeTop = window.innerHeight * 0.18;
+            const safeLeft = window.innerWidth * 0.32;
+            const safeTop = window.innerHeight * 0.22;
+            const margin = 80;
 
             photos.forEach(img => {
                 let ox = parseFloat(img.dataset.ox);
@@ -241,13 +242,11 @@
                 const baseRot = img.style.transform.match(/rotate\((.*?)deg\)/)[1];
 
                 function update() {
-                    // 漂浮
                     x += vx;
                     y += vy;
                     if (Math.abs(x) > 12) vx *= -1;
                     if (Math.abs(y) > 12) vy *= -1;
 
-                    // 鼠标躲避
                     const rect = img.getBoundingClientRect();
                     const cx = rect.left + rect.width / 2;
                     const cy = rect.top + rect.height / 2;
@@ -260,11 +259,13 @@
                         y += Math.sin(angle) * avoidForce * (1 - dist / avoidRadius);
                     }
 
-                    // 🔥 禁区强制锁死：永远不进LOGO区域
                     const finalX = ox + x;
                     const finalY = oy + y;
-                    if (finalX < safeLeft && finalY < safeTop) {
-                        x = 0; y = 0;
+
+                    // 🔥 最强锁：只要进禁区 → 直接弹回安全区
+                    if (finalX < safeLeft + margin && finalY < safeTop + margin) {
+                        x = 0;
+                        y = 0;
                     }
 
                     img.style.transform = `translate(-50%, -50%) rotate(${baseRot}deg) scale(1) translate(${x}px, ${y}px)`;
