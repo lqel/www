@@ -98,7 +98,7 @@
             pointer-events: none;
         }
 
-        /* 按钮保留 */
+        /* 按钮手机端不拥挤 */
         .nav-link {
             position: absolute;
             top: 52%;
@@ -179,7 +179,7 @@
             setTimeout(initPhotos, 1000);
         }, 5000);
 
-        // 🔥 核心：均匀 + 不规则 + 铺满所有屏幕（14张全显）
+        // 🔥 终极修复：全屏填满 + 所有设备适配 + 14张均匀不规则
         function initPhotos() {
             const wrapper = document.getElementById('photoWrapper');
             const total = images.length;
@@ -187,7 +187,9 @@
             const rows = Math.ceil(total / cols);
             const cellW = 100 / cols;
             const cellH = 100 / rows;
-            const imgSize = Math.min(window.innerWidth, window.innerHeight) / 4;
+            
+            // 自适应大小，保证全屏填满所有设备
+            const imgSize = Math.max(window.innerWidth, window.innerHeight) / 3.2;
 
             for (let i = 0; i < total; i++) {
                 const img = document.createElement('img');
@@ -202,9 +204,10 @@
                 const baseX = col * cellW + cellW * 0.5;
                 const baseY = row * cellH + cellH * 0.5;
                 
-                const randX = (Math.random() - 0.5) * cellW * 0.65;
-                const randY = (Math.random() - 0.5) * cellH * 0.65;
-                const rot = (Math.random() - 0.5) * 50;
+                // 轻微随机，保持均匀又不规则
+                const randX = (Math.random() - 0.5) * cellW * 0.5;
+                const randY = (Math.random() - 0.5) * cellH * 0.5;
+                const rot = (Math.random() - 0.5) * 40;
 
                 img.style.left = baseX + randX + '%';
                 img.style.top = baseY + randY + '%';
