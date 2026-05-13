@@ -98,7 +98,7 @@
             pointer-events: none;
         }
 
-        /* 按钮间距拉开，手机不拥挤 */
+        /* 按钮保留 */
         .nav-link {
             position: absolute;
             top: 52%;
@@ -140,7 +140,7 @@
             overflow: hidden;
         }
 
-        /* 图片：边缘柔和透明 + 中间清晰，**完全不模糊** */
+        /* 🔥🔥🔥 已删除：所有柔和透明、蒙版、模糊全部清空！纯原图！ */
         .photo {
             position: absolute;
             object-fit: cover;
@@ -148,13 +148,11 @@
             border-radius: 50%;
             transition: opacity 2s ease;
             transform-origin: center;
-            -webkit-mask-image: radial-gradient(circle, black 75%, transparent 100%);
-            mask-image: radial-gradient(circle, black 75%, transparent 100%);
-            opacity: 0.9;
+            /* 无任何效果 */
         }
 
         .photo.show {
-            opacity: 0.9;
+            opacity: 0.95;
         }
     </style>
 </head>
@@ -182,12 +180,11 @@
             setTimeout(initPhotos, 1000);
         }, 5000);
 
-        // 🔥 彻底修复：全屏铺满 + 14张全部显示 + 无任何区域限制
+        // 全屏铺满 14张图片
         function initPhotos() {
             const wrapper = document.getElementById('photoWrapper');
             const imgSize = Math.max(window.innerWidth, window.innerHeight) / 2.8;
 
-            // 循环生成所有图片，铺满全屏
             for (let i = 0; i < images.length; i++) {
                 const img = document.createElement('img');
                 img.src = images[i];
@@ -195,7 +192,6 @@
                 img.style.width = imgSize + 'px';
                 img.style.height = imgSize + 'px';
 
-                // 全屏随机位置，0-100%铺满，无死角
                 const posX = Math.random() * 100;
                 const posY = Math.random() * 100;
                 const rot = (Math.random() - 0.5) * 60;
