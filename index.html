@@ -152,10 +152,10 @@
             setTimeout(initPhotos, 1000);
         }, 5000);
 
-        // 🔥 铺满屏幕的照片布局
+        // 🔥 固定6张 + 均匀分布 + 放大3倍
         function initPhotos() {
             const wrapper = document.getElementById('photoWrapper');
-            const count = 10; // 更多图片，铺满屏幕
+            const count = 6; // 固定6张
             const selected = images.sort(() => Math.random() - 0.5).slice(0, count);
 
             selected.forEach((src, i) => {
@@ -165,13 +165,17 @@
                 
                 // 随机角度 -18° ~ 18°
                 const rot = (Math.random() * 36) - 18;
-                // 全屏随机位置
-                const posX = Math.random() * 90;
-                const posY = Math.random() * 85 + 5;
+                
+                // 🔥 均匀分布，不扎堆
+                const step = 100 / count;
+                const base = i * step;
+                const posX = Math.min(98, Math.max(2, base + Math.random() * (step * 0.7)));
+                const posY = Math.min(95, Math.max(5, Math.random() * 90));
 
                 img.style.left = posX + '%';
                 img.style.top = posY + '%';
-                img.style.transform = `translate(-50%, -50%) rotate(${rot}deg)`;
+                // 🔥 放大 3 倍
+                img.style.transform = `translate(-50%, -50%) rotate(${rot}deg) scale(3)`;
 
                 wrapper.appendChild(img);
             });
@@ -206,7 +210,8 @@
                     const moveX = mouseX * speed;
                     const moveY = mouseY * speed;
                     const baseRot = parseFloat(img.style.transform.match(/rotate\((.*?)deg\)/)[1] || 0);
-                    img.style.transform = `translate(-50%, -50%) rotate(${baseRot}deg) translate(${moveX}px, ${moveY}px)`;
+                    // 🔥 放大3倍 + 浮动 + 角度
+                    img.style.transform = `translate(-50%, -50%) rotate(${baseRot}deg) scale(3) translate(${moveX}px, ${moveY}px)`;
                 });
                 requestAnimationFrame(animate);
             }
