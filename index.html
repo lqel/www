@@ -56,7 +56,7 @@
             font-size: 1.8rem;
         }
 
-        /* 🔥 幅度加大！肉眼清晰可见动画 */
+        /* 加大幅度微动动画 */
         .slash {
             display: inline-block;
             font-family: "Comic Sans MS", "Arial Rounded MT Bold", sans-serif !important;
@@ -145,11 +145,15 @@
             border-radius: 50%;
             transition: opacity 2s ease;
             transform-origin: center;
+            
+            /* 🔥 核心：只让边缘渐变透明，中间保持清晰 */
+            -webkit-mask-image: radial-gradient(circle, white 90%, rgba(255,255,255,0.75) 100%);
+            mask-image: radial-gradient(circle, white 90%, rgba(255,255,255,0.75) 100%);
         }
 
-        /* 🔥 图片透明度降低 → 更柔和！从 0.95 → 0.75 */
+        /* 🔥 恢复原来的透明度 0.95，整体不变！只边缘柔化 */
         .photo.show {
-            opacity: 0.75;
+            opacity: 0.95;
         }
     </style>
 </head>
@@ -240,7 +244,7 @@
                     
                     img.style.transform = `translate(-50%, -50%) rotate(${rot}deg) translate(${moveX}px, ${moveY}px)`;
                 });
-                requestAnimationFrame(animate);
+                requestAnimationFrame(animate());
             }
             animate();
         }
