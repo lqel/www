@@ -19,6 +19,7 @@
             position: relative;
         }
 
+        /* 锁定你要的 LUO 字体，绝对不动 */
         .center-text {
             font-size: 8vw;
             letter-spacing: 0.1em;
@@ -35,7 +36,7 @@
             font-family: "Comic Sans MS", "Arial Rounded MT Bold", "Helvetica Rounded", sans-serif;
             font-weight: 900;
             
-            background: linear-gradient(45deg, #ff99cc, #a0c4ff);
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #ffecd2, #c9f4ff, #a1c4fd);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
@@ -60,7 +61,7 @@
             display: inline-block;
             font-family: "Comic Sans MS", "Arial Rounded MT Bold", sans-serif !important;
             animation: slashSlant 7s ease-in-out infinite;
-            background: linear-gradient(45deg, #ff99cc, #a0c4ff);
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #ffecd2, #a1c4fd);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -71,8 +72,8 @@
         @keyframes slashSlant {
             0%   { opacity: 1; transform: translate(0, 0); }
             14%  { opacity: 1; transform: translate(0, 0); }
-            18%  { opacity: 0; transform: translate(15px, -36px); }
-            24%  { opacity: 0; transform: translate(-15px, 36px); }
+            18%  { opacity: 0; transform: translate(15vw, -36vw); }
+            24%  { opacity: 0; transform: translate(-15vw, 36vw); }
             28.5%{ opacity: 1; transform: translate(0, 0); }
             100% { opacity: 1; transform: translate(0, 0); }
         }
@@ -100,7 +101,7 @@
         .nav-link {
             position: absolute;
             top: 52%;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-family: "YouYuan", "幼圆", sans-serif !important;
             font-weight: 500;
             opacity: 0;
@@ -109,7 +110,7 @@
             text-decoration: none;
             color: #fff;
             z-index: 888;
-            padding: 12px 28px;
+            padding: 12px 26px;
             border-radius: 50px;
             background: linear-gradient(120deg, #ff99cc, #a0c4ff);
             box-shadow: 0 6px 15px rgba(255, 153, 204, 0.25);
@@ -118,13 +119,13 @@
             opacity: 1;
         }
         .nav-link:hover {
-            transform: scale(1.06);
+            transform: scale(1.05);
         }
         .nav-left {
-            left: 12%;
+            left: 8%;
         }
         .nav-right {
-            right: 12%;
+            right: 8%;
         }
 
         .photo-wrapper {
@@ -148,7 +149,7 @@
         }
 
         .photo.show {
-            opacity: 0.92;
+            opacity: 0.95;
         }
     </style>
 </head>
@@ -176,39 +177,39 @@
             setTimeout(initPhotos, 1000);
         }, 5000);
 
-        // 高级随机铺满：四边角落都有、大小错落、所有设备自适应
+        // 🔥 核心修改：左上角 30% 区域禁止放图片，其他位置铺满
         function initPhotos() {
             const wrapper = document.getElementById('photoWrapper');
+            const total = images.length;
+            const cols = 4;
+            const rows = Math.ceil(total / cols);
+            const cellW = 100 / cols;
+            const cellH = 100 / rows;
+            
+            const imgSize = Math.max(window.innerWidth, window.innerHeight) / 2.2;
 
-            images.forEach((src, idx) => {
+            for (let i = 0; i < total; i++) {
                 const img = document.createElement('img');
-                img.src = src;
+                img.src = images[i];
                 img.className = 'photo';
+                img.style.width = imgSize + 'px';
+                img.style.height = imgSize + 'px';
 
-                // 大小错落：有大有小，更有层次
-                const baseSize = Math.min(window.innerWidth, window.innerHeight) / 2.5;
-                const size = baseSize * (0.65 + Math.random() * 0.55);
-                img.style.width = size + 'px';
-                img.style.height = size + 'px';
+                let posX, posY;
+                // 🔥 避开左上角：x>30% 或 y>30%
+                do {
+                    posX = Math.random() * 100;
+                    posY = Math.random() * 100;
+                } while (posX < 30 && posY < 30);
 
-                // 0~100% 全屏随机，强制铺满四个角落不留白
-                let x = Math.random() * 100;
-                let y = Math.random() * 100;
+                const rot = (Math.random() - 0.5) * 40;
 
-                // 强制把一部分图片压到四边，保证屏幕填满
-                if(idx % 4 === 0) x = Math.random() * 25;
-                if(idx % 4 === 1) x = 75 + Math.random() * 25;
-                if(idx % 4 === 2) y = Math.random() * 25;
-                if(idx % 4 === 3) y = 75 + Math.random() * 25;
-
-                const rot = (Math.random() - 0.5) * 55;
-
-                img.style.left = x + '%';
-                img.style.top = y + '%';
+                img.style.left = posX + '%';
+                img.style.top = posY + '%';
                 img.style.transform = `translate(-50%, -50%) rotate(${rot}deg)`;
-
+                
                 wrapper.appendChild(img);
-            });
+            }
 
             setTimeout(() => {
                 document.querySelectorAll('.photo').forEach(p => p.classList.add('show'));
@@ -240,7 +241,7 @@
                 my += (mouseY - my) * 0.1;
 
                 photos.forEach((img, i) => {
-                    const speed = 5 + i * 0.7;
+                    const speed = 4 + i * 0.8;
                     const moveX = mx * speed;
                     const moveY = my * speed;
                     const rot = parseFloat(img.style.transform.match(/rotate\((.*?)deg\)/)[1] || 0);
