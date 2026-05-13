@@ -77,7 +77,6 @@
             100% { opacity: 1; transform: translate(0, 0); }
         }
 
-        /* 🔥 全部换成 幼圆体 (YouYuan) 超级可爱 */
         .main-info {
             position: absolute;
             right: 2rem;
@@ -124,6 +123,7 @@
             right: 18%;
         }
 
+        /* 🔥 图片层级：在所有文字下方 */
         .photo-wrapper {
             position: fixed;
             top: 0;
@@ -186,8 +186,20 @@
                 img.style.width = imgSize + 'px';
                 img.style.height = imgSize + 'px';
 
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
+                // 🔥 核心修复：避开中间文字区域 + 完全无序
+                let posX, posY;
+                const safeArea = 20; // 中间安全距离
+                
+                while (true) {
+                    posX = Math.random() * 100;
+                    posY = Math.random() * 100;
+                    
+                    // 避开中间 52% 上下的文字行
+                    if (!(posY > 52 - safeArea && posY < 52 + safeArea)) {
+                        break;
+                    }
+                }
+
                 const rot = (Math.random() - 0.5) * 60;
                 
                 img.style.left = posX + '%';
